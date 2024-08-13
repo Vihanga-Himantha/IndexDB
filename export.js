@@ -1,5 +1,4 @@
-// Load the xlsx library
-import * as XLSX from 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.2/xlsx.full.min.js';
+// This file handles exporting data to Excel
 
 function exportToExcel() {
     const transaction = db.transaction(['students'], 'readonly');
@@ -12,7 +11,7 @@ function exportToExcel() {
             students.push(cursor.value);
             cursor.continue();
         } else {
-            // Convert data to worksheet
+            // Convert JSON data to worksheet
             const ws = XLSX.utils.json_to_sheet(students);
 
             // Create a new workbook and add the worksheet
@@ -25,5 +24,5 @@ function exportToExcel() {
     };
 }
 
-// Make sure to export the function if needed
-export { exportToExcel };
+// Make the function available globally
+window.exportToExcel = exportToExcel;

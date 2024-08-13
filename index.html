@@ -12,9 +12,9 @@
     <div class="search-sort">
         <input type="text" id="searchInput" placeholder="Search by name...">
         <select id="sortSelect">
-            <option value="name">Sort by Name</option>
-            <option value="age">Sort by Age</option>
-            <option value="grade">Sort by Grade</option>
+            <option value="name" id="sortByName">Sort by Name</option>
+            <option value="age" id="sortByAge">Sort by Age</option>
+            <option value="grade" id="sortByGrade">Sort by Grade</option>
         </select>
     </div>
 
@@ -75,7 +75,20 @@
         </div>
     </div>
 
+
+
+        <!-- Add this where you want the export button to appear -->
+    <div class="export-container">
+        <button id="exportButton" class="export-btn">Export to Excel</button>
+    </div>
+
+
+
+
     <script src="main.js"></script>
     <script src="export.js"></script>
+    <!-- Add this in your index.html -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.2/xlsx.full.min.js"></script>
+
 </body>
 </html>

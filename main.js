@@ -86,6 +86,21 @@ document.getElementById('closeConfirmModal').addEventListener('click', function(
     document.getElementById('confirmModal').style.display = 'none';
 });
 
+
+
+
+// Your existing code for IndexedDB and other functionalities
+
+// Add event listener for the export button
+document.getElementById('exportButton').addEventListener('click', function() {
+    exportToExcel(); // This will call the function from export.js
+});
+
+
+
+
+
+
 function editStudent(id) {
     const transaction = db.transaction(['students'], 'readonly');
     const objectStore = transaction.objectStore('students');
@@ -133,8 +148,8 @@ document.getElementById('searchInput').addEventListener('input', function() {
 
 
 
-document.getElementById('sortSelect').addEventListener('change', function() {
-    const criteria = this.value;
+// Function to display students and sort them
+function displayStudents(sortBy = 'name') {
     const transaction = db.transaction(['students'], 'readonly');
     const objectStore = transaction.objectStore('students');
     const students = [];
@@ -145,25 +160,34 @@ document.getElementById('sortSelect').addEventListener('change', function() {
             students.push(cursor.value);
             cursor.continue();
         } else {
-            students.sort((a, b) => {
-                if (a[criteria] < b[criteria]) return -1;
-                if (a[criteria] > b[criteria]) return 1;
-                return 0;
-            });
-            const tbody = document.querySelector('#studentTable tbody');
-            tbody.innerHTML = '';
-            students.forEach(student => {
-                const row = `<tr>
-                    <td>${student.name}</td>
-                    <td>${student.age}</td>
-                    <td>${student.grade}</td>
-                    <td>
-                        <button onclick="editStudent(${student.id})">Edit</button>
-                        <button class="delete-button" onclick="confirmDeleteStudent(${student.id})">Delete</button>
-                    </td>
-                </tr>`;
-                tbody.insertAdjacentHTML('beforeend', row);
-            });
+            // Sort students array
+            if (sortBy === 'name') {
+                students.sort((a, b) => a.name.localeCompare(b.name));
+            } else if (sortBy === 'age') {
+                students.sort((a, b) => a.age - b.age); // Sort by age as a number
+            } else if (sortBy === 'grade') {
+                students.sort((a, b) => a.grade - b.grade); // Sort by grade as a number
+            }
+
+            // Clear the table before adding new sorted entries
+            studentTable.innerHTML = '';
+
+            // Display sorted students
+            students.forEach(student => addStudentToTable(student));
         }
     };
+}
+
+// Event listeners for sorting buttons
+document.getElementById('sortByName').addEventListener('click', function() {
+    displayStudents('name');
 });
+
+document.getElementById('sortByAge').addEventListener('click', function() {
+    displayStudents('age');
+});
+
+document.getElementById('sortByGrade').addEventListener('click', function() {
+    displayStudents('grade');
+});
+
